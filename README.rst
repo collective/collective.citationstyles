@@ -4,7 +4,7 @@ Introduction
 ============
 
 This package provides integration of the `citationstyles
-<http://citationstyles.org/`_ project into the `Plone <http://plone.org>`_
+<http://citationstyles.org/>`_ project into the `Plone <http://plone.org>`_
 content management system. The package extends the functionality of
 `Products.CMFBibliographyAT <http://plone.org/products/cmfbibliographyat/>`.
 It provides a control panel where site administrators may configure available
