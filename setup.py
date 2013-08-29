@@ -42,7 +42,7 @@ setup(name='collective.citationstyles',
       install_requires=[
           'setuptools',
           # -*- Extra requirements: -*-
-          'Plone',
+          'Products.CMFPlone',
           'Products.CMFBibliographyAT',
       ],
       extras_require={'test': ['plone.app.testing']},
