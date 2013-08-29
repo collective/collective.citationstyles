@@ -1,5 +1,4 @@
 from setuptools import setup, find_packages
-import os
 
 version = '0.1a'
 
@@ -22,6 +21,7 @@ setup(name='collective.citationstyles',
         "Operating System :: OS Independent",
         "Framework :: Zope2",
         "Framework :: Plone",
+        "Framework :: Plone :: 4.1",
         "Framework :: Plone :: 4.2",
         "Framework :: Plone :: 4.3",
         "Programming Language :: Python",
@@ -42,6 +42,8 @@ setup(name='collective.citationstyles',
       install_requires=[
           'setuptools',
           # -*- Extra requirements: -*-
+          'Plone',
+          'Products.CMFBibliographyAT',
       ],
       extras_require={'test': ['plone.app.testing']},
       entry_points="""
