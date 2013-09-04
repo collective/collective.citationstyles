@@ -1,0 +1,15 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:z3c="http://namespaces.zope.org/z3c">
+
+  <!-- control panel for settings -->
+  <browser:page
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      name="citationstyles-settings"
+      class=".controlpanel.SettingsControlPanelView"
+      permission="cmf.ManagePortal"
+      template="citationstyles_settings.pt"
+      />
+
+</configure>

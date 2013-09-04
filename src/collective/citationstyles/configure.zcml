@@ -18,4 +18,13 @@
       />
   <!-- -*- extra stuff goes here -*- -->
 
+  <permission
+      id="collective.citationstyles.ManageSettings"
+      title="collective.citationstyles: Manage settings">
+    <role name="Site Administrator" />
+    <role name="Manager" />
+  </permission>
+
+  <include package=".browser" />
+
 </configure>
