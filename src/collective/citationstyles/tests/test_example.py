@@ -16,10 +16,10 @@ class TestExample(unittest.TestCase):
         self.qi_tool = getToolByName(self.portal, 'portal_quickinstaller')
 
     def test_product_is_installed(self):
-        """ Validate that our products GS profile has been run and the product
-            installed
-        """
-        pid = 'collective.citationstyles'
+        """The package and dependencies should be installed"""
+        pids = ['collective.citationstyles', 'CMFBibliographyAT',
+                'ATExtensions']
         installed = [p['id'] for p in self.qi_tool.listInstalledProducts()]
-        self.assertTrue(pid in installed,
-                        'package appears not to have been installed')
+        for pid in pids:
+            self.assertTrue(pid in installed,
+                            'package appears not to have been installed')
