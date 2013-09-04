@@ -6,7 +6,7 @@ from collective.citationstyles.testing import \
     COLLECTIVE_CITATIONSTYLES_INTEGRATION_TESTING
 
 
-class TestExample(unittest.TestCase):
+class TestSetup(unittest.TestCase):
 
     layer = COLLECTIVE_CITATIONSTYLES_INTEGRATION_TESTING
 
