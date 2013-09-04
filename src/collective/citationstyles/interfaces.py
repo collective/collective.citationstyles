@@ -13,3 +13,11 @@ class ISettings(Interface):
     default_style = schema.TextLine(title=_(u'Default Style'),
         description=_(u'The default citation style to use on the site'),
         default=None)
+
+
+class ICitationRenderer(Interface):
+    """utility renders"""
+
+
+class ICitationIterator(Interface):
+    """adapter that produces an iterable of IBibliographicReference items"""
