@@ -4,7 +4,7 @@ from bibliograph.core.interfaces import IBibliographicReference
 
 from collective.citationstyles.testing import \
     COLLECTIVE_CITATIONSTYLES_INTEGRATION_TESTING
-from collective.citationstyles.iterator import BibliograpyIterator
+from collective.citationstyles.adapters import BibliograpyIterator
 
 
 class TestBibliograpyIterator(unittest.TestCase):

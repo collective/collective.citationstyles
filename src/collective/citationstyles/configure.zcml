@@ -29,7 +29,7 @@
 
   <adapter for="*"
            provides=".interfaces.ICitationIterator"
-           factory=".iterator.BibliograpyIterator"
+           factory=".adapters.BibliograpyIterator"
   />
 
 </configure>
