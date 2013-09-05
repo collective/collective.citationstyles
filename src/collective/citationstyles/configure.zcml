@@ -29,7 +29,10 @@
 
   <adapter for="*"
            provides=".interfaces.ICitationIterator"
-           factory=".adapters.BibliograpyIterator"
-  />
+           factory=".adapters.BibliograpyIterator" />
+
+  <utility provides=".interfaces.ICitationRenderer"
+           factory=".utility.ReferenceCSLRenderer"
+           permission="zope.Public" />
 
 </configure>
