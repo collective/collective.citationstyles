@@ -78,14 +78,17 @@ class TestJSONView(unittest.TestCase):
                 self.fail('invalid json: %s' % json_val)
             self.assertTrue(ctxt.UID() in actual, "UID not included in JSON!")
 
-    # XXX: This is needed, but we are skipping it for now because of the
-    # old/new collections mess across Plone 4 versions
-    #
-    # def testViewAvailableOnCollections(self):
-    #     ctxt = self._createCollection()
-    #     view = self.getView(ctxt)
-    #     self.assertTrue(view is not None)
-    #     self.assertTrue(isinstance(view, CitationJSONView))
+    def testViewAvailableOnCollections(self):
+        ctxt = self.portal['collection']
+        view = self.getView(ctxt)
+        self.assertTrue(view is not None)
+        self.assertTrue(isinstance(view, CitationJSONView))
+
+    def testViewAvailableOnTopics(self):
+        ctxt = self.portal['topic']
+        view = self.getView(ctxt)
+        self.assertTrue(view is not None)
+        self.assertTrue(isinstance(view, CitationJSONView))
 
 
 class DumbRenderer(object):
