@@ -85,16 +85,48 @@ class TestJSONView(unittest.TestCase):
             self.assertTrue(ctxt.UID() in actual, "UID not included in JSON!")
 
     def testViewAvailableOnCollections(self):
+        if not hasattr(self.portal, 'collection'):
+            return
         ctxt = self.portal['collection']
         view = self.getView(ctxt)
         self.assertTrue(view is not None)
         self.assertTrue(isinstance(view, CitationJSONView))
 
+    def testViewOnCollectionWithBibItemsInQueryReturnsJSON(self):
+        if not hasattr(self.portal, 'collection'):
+            return
+        ctxt = self.portal['collection']
+        view = self.getView(ctxt)
+        json_val = view()
+        self.assertTrue(json_val)
+        try:
+            actual = json.loads(json_val)
+        except Exception:
+            self.fail('invalid json: %s' % json_val)
+        for item in ctxt.results(batch=False):
+            self.assertTrue(item.getObject().UID() in actual)
+
     def testViewAvailableOnTopics(self):
+        if not hasattr(self.portal, 'topic'):
+            return
         ctxt = self.portal['topic']
         view = self.getView(ctxt)
         self.assertTrue(view is not None)
         self.assertTrue(isinstance(view, CitationJSONView))
+
+    def testViewOnTopicWithBibItemsInQueryReturnsJSON(self):
+        if not hasattr(self.portal, 'topic'):
+            return
+        ctxt = self.portal['topic']
+        view = self.getView(ctxt)
+        json_val = view()
+        self.assertTrue(json_val)
+        try:
+            actual = json.loads(json_val)
+        except Exception:
+            self.fail('invalid json: %s' % json_val)
+        for item in ctxt.queryCatalog():
+            self.assertTrue(item.getObject().UID() in actual)
 
 
 class DumbRenderer(object):
