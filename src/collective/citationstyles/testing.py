@@ -67,18 +67,21 @@ class CollectivecitationstylesLayer(PloneSandboxLayer):
         topic_id = "topic"
         portal.invokeFactory('Topic', topic_id)
         topic = portal[topic_id]
-        crit = topic.addCriterion('portal_type', 'ATSimpleStringCriterion')
-        crit.setValue('BibliographyFolder')
+        crit = topic.addCriterion('path', 'ATPathCriterion')
+        crit.setValue([portal.bib_folder.UID()])
 
     def createNewStyleCollection(self, portal):
+        if not 'Collection' in portal.portal_types:
+            return
         collection_id = "collection"
         portal.invokeFactory('Collection', collection_id)
         collection = portal[collection_id]
+        types = [obj.portal_type for obj in portal.bib_folder.objectValues()]
         query = [{
             'i': 'portal_type',
-            'o': 'plone.app.querystring.operation.string.is',
-            'v': 'BibliographyFolder',
-        }]
+            'o': 'plone.app.querystring.operation.list.contains',
+            'v': types, }]
+
         collection.setQuery(query)
 
 
