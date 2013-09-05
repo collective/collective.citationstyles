@@ -47,12 +47,40 @@ class CollectivecitationstylesLayer(PloneSandboxLayer):
         applyProfile(portal, 'collective.citationstyles:default')
         setRoles(portal, TEST_USER_ID, ['Manager'])
         login(portal, TEST_USER_NAME)
+        self.createBibFolder(portal)
+        self.createOldStyleCollection(portal)
+        self.createNewStyleCollection(portal)
+        setRoles(portal, TEST_USER_ID, ['Member'])
+        logout()
+
+    def createBibFolder(self, portal):
         bf_id = portal.invokeFactory("BibliographyFolder", id="bib_folder")
         bib_folder = portal[bf_id]
         bib_source = open(BIBTEX_TEST_BIB, 'r').read()
         bib_folder.processImport(bib_source, 'source.bib')
-        setRoles(portal, TEST_USER_ID, ['Member'])
-        logout()
+
+    def createOldStyleCollection(self, portal):
+        if not 'Topic' in portal.portal_types:
+            return
+        if not portal.portal_types.Topic.global_allow:
+            portal.portal_types.Topic.global_allow = True
+        topic_id = "topic"
+        portal.invokeFactory('Topic', topic_id)
+        topic = portal[topic_id]
+        crit = topic.addCriterion('portal_type', 'ATSimpleStringCriterion')
+        crit.setValue('BibliographyFolder')
+
+    def createNewStyleCollection(self, portal):
+        collection_id = "collection"
+        portal.invokeFactory('Collection', collection_id)
+        collection = portal[collection_id]
+        query = [{
+            'i': 'portal_type',
+            'o': 'plone.app.querystring.operation.string.is',
+            'v': 'BibliographyFolder',
+        }]
+        collection.setQuery(query)
+
 
 COLLECTIVE_CITATIONSTYLES_FIXTURE = CollectivecitationstylesLayer()
 COLLECTIVE_CITATIONSTYLES_INTEGRATION_TESTING = IntegrationTesting(
