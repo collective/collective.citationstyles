@@ -1,9 +1,12 @@
 import unittest2 as unittest
 
+from zope.component import queryUtility
 from Products.CMFCore.utils import getToolByName
 
 from collective.citationstyles.testing import \
     COLLECTIVE_CITATIONSTYLES_INTEGRATION_TESTING
+from collective.citationstyles.interfaces import ICitationIterator
+from collective.citationstyles.interfaces import ICitationRenderer
 
 
 class TestSetup(unittest.TestCase):
@@ -23,3 +26,11 @@ class TestSetup(unittest.TestCase):
         for pid in pids:
             self.assertTrue(pid in installed,
                             'package appears not to have been installed')
+
+    def test_citation_iteration_adapter_registered(self):
+        iterator = ICitationIterator(self.portal)
+        self.assertTrue(iterator is not None)
+
+    def test_citation_renderer_utility_registered(self):
+        renderer = queryUtility(ICitationRenderer)
+        self.assertTrue(renderer is not None)
