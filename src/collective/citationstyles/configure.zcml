@@ -27,4 +27,9 @@
 
   <include package=".browser" />
 
+  <adapter for="*"
+           provides=".interfaces.ICitationIterator"
+           factory=".iterator.BibliograpyIterator"
+  />
+
 </configure>
