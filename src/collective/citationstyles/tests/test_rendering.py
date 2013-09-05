@@ -48,6 +48,12 @@ class TestJSONView(unittest.TestCase):
         self.assertTrue(view is not None)
         self.assertTrue(isinstance(view, CitationJSONView))
 
+    def testResponseContentTypeIsJson(self):
+        ctxt = self.bib_folder
+        self.getView(ctxt)()
+        content_type = self.layer['request'].response.getHeader('content-type')
+        self.assertEqual("application/json; charset='utf-8'", content_type)
+
     def testViewOnBibFolderReturnsJSON(self):
         ctxt = self.bib_folder
         view = self.getView(ctxt)

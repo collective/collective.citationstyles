@@ -12,6 +12,7 @@ class CitationJSONView(BrowserView):
     """
 
     def __call__(self):
+        self._setHeader()
         items = ICitationIterator(self.context)
         renderer = queryUtility(ICitationRenderer, default=None)
         result = {}
@@ -20,3 +21,7 @@ class CitationJSONView(BrowserView):
                 rendered = renderer(item)
                 result[rendered['id']] = rendered
         return json.dumps(result)
+
+    def _setHeader(self):
+        self.request.RESPONSE.setHeader('content-type',
+                                        "application/json; charset='utf-8'")
