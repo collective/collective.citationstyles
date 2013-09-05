@@ -14,19 +14,7 @@
 
   <!-- view that renders bib items as json for citationstyles processing -->
   <browser:page
-      for="Products.CMFBibliographyAT.interface.IBibliographyFolder"
-      name="citations-json"
-      class=".jsonview.CitationJSONView"
-      permission="zope2.View"
-      />
-  <browser:page
-      for="Products.CMFBibliographyAT.interface.ILargeBibliographyFolder"
-      name="citations-json"
-      class=".jsonview.CitationJSONView"
-      permission="zope2.View"
-      />
-  <browser:page
-      for="Products.CMFBibliographyAT.interface.IBibliographicItem"
+      for="*"
       name="citations-json"
       class=".jsonview.CitationJSONView"
       permission="zope2.View"
