@@ -6,12 +6,14 @@ from plone.app.testing import logout
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_ID
+from zope.component import provideUtility
+from zope.component import queryUtility
+from zope.interface import alsoProvides
 
-from collective.citationstyles.browser.json import CitationJSONView
+from collective.citationstyles.interfaces import ICitationRenderer
+from collective.citationstyles.browser.jsonview import CitationJSONView
 from collective.citationstyles.testing import \
     COLLECTIVE_CITATIONSTYLES_INTEGRATION_TESTING
-
-
 
 
 class TestJSONView(unittest.TestCase):
@@ -57,7 +59,7 @@ class TestJSONView(unittest.TestCase):
             self.fail('invalid json: %s' % json_val)
         for obj in ctxt.objectValues():
             expected = obj.UID()
-            self.assertTrue(expected in actual)
+            self.assertTrue(expected in actual, "UID not included in JSON!")
 
     def testViewAvailableOnBibItems(self):
         for ctxt in self.bib_folder.objectValues():
@@ -74,15 +76,50 @@ class TestJSONView(unittest.TestCase):
                 actual = json.loads(json_val)
             except Exception:
                 self.fail('invalid json: %s' % json_val)
-            self.assertTrue(ctxt.UID() in actual)
+            self.assertTrue(ctxt.UID() in actual, "UID not included in JSON!")
 
-    # XXX: This is needed, but we are skipping it for now because of the 
+    # XXX: This is needed, but we are skipping it for now because of the
     # old/new collections mess across Plone 4 versions
-    # 
+    #
     # def testViewAvailableOnCollections(self):
     #     ctxt = self._createCollection()
     #     view = self.getView(ctxt)
     #     self.assertTrue(view is not None)
     #     self.assertTrue(isinstance(view, CitationJSONView))
 
-    
+
+class DumbRenderer(object):
+    """ Render the bare minimum about an IBibliographicReference
+    """
+    def __call__(self, bib_ref):
+        return {'id': bib_ref.title}
+
+
+class TestJSONViewIntegration(unittest.TestCase):
+
+    layer = COLLECTIVE_CITATIONSTYLES_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.app = self.layer['app']
+        self.portal = self.layer['portal']
+        self.bib_folder = self.portal.bib_folder
+        self.renderer = DumbRenderer()
+        self.orig_renderer = queryUtility(ICitationRenderer)
+        alsoProvides(self.renderer, ICitationRenderer)
+        provideUtility(self.renderer, ICitationRenderer)
+
+    def tearDown(self):
+        provideUtility(self.orig_renderer, ICitationRenderer)
+
+    def testViewOnBibFolderReturnsJSON(self):
+        ctxt = self.bib_folder
+        view = ctxt.restrictedTraverse('@@citations-json')
+        json_val = view()
+        self.assertTrue(json_val)
+        try:
+            actual = json.loads(json_val)
+        except Exception:
+            self.fail('invalid json: %s' % json_val)
+        for obj in ctxt.objectValues():
+            expected = obj.Title()
+            self.assertTrue(expected in actual)
