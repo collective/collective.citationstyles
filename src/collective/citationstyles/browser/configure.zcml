@@ -16,19 +16,19 @@
   <browser:page
       for="Products.CMFBibliographyAT.interface.IBibliographyFolder"
       name="citations-json"
-      class=".json.CitationJSONView"
+      class=".jsonview.CitationJSONView"
       permission="zope2.View"
       />
   <browser:page
       for="Products.CMFBibliographyAT.interface.ILargeBibliographyFolder"
       name="citations-json"
-      class=".json.CitationJSONView"
+      class=".jsonview.CitationJSONView"
       permission="zope2.View"
       />
   <browser:page
       for="Products.CMFBibliographyAT.interface.IBibliographicItem"
       name="citations-json"
-      class=".json.CitationJSONView"
+      class=".jsonview.CitationJSONView"
       permission="zope2.View"
       />
 
