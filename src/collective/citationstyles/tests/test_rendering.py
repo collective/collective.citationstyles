@@ -103,7 +103,7 @@ class TestJSONView(unittest.TestCase):
             actual = json.loads(json_val)
         except Exception:
             self.fail('invalid json: %s' % json_val)
-        for item in ctxt.results(batch=False):
+        for item in ctxt.queryCatalog():
             self.assertTrue(item.getObject().UID() in actual)
 
     def testViewAvailableOnTopics(self):
