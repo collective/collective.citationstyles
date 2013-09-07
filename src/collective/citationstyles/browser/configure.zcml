@@ -20,4 +20,16 @@
       permission="zope2.View"
       />
 
+  <browser:page
+      for="*"
+      name="citationstyles-js"
+      class=".jsview.CitationStylesJSView"
+      permission="zope2.View"
+      />
+
+  <browser:resourceDirectory
+      name="citationstyles.locales"
+      directory="locale"
+      />
+
 </configure>
