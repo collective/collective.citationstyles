@@ -35,7 +35,7 @@ class CitationStylesJSView(BrowserView):
         for name, value in styles.iteritems():
             output.append('collective_csl_info.add_csl({0}, {1});'.format(
                 dumps(name), dumps(value)));
-        output.append('collective_csl_info.set_default_csl({0});'.format(
+        output.append('collective_csl_info.default_csl = {0};'.format(
             dumps(settings.default_style)))
         return '\n'.join(output)
 
@@ -58,8 +58,9 @@ class CitationStylesJSView(BrowserView):
             # fall back to global default
             locale = DEFAULT_LOCALE
         locale_string = self._get_locale_string(locale)
-        return 'collective_csl_info.add_locale({0}, {1});'.format(
-            dumps(locale), dumps(locale_string))
+        return ('collective_csl_info.add_locale({name}, {locale_string});\n'
+                'collective_csl_info.default_locale = {name};'.format(
+            name=dumps(locale), locale_string=dumps(locale_string)))
 
     @staticmethod
     def _find_locale_for_lang(lang):

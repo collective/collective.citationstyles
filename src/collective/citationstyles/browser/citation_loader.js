@@ -4,13 +4,14 @@ var _CollectiveCitationstylesInfo = function () {
     if ( arguments.callee._singletonInstance )
         return arguments.callee._singletonInstance;
     arguments.callee._singletonInstance = this;
-
-    var default_csl;
     var csl_map = {};
     var locale_map = {};
     var available_csl = [];
     var available_locale = [];
-    var abbreviations = {"default": {}};
+
+    this.abbreviations = {"default": {}};
+    this.default_csl = '';
+    this.default_locale = '';
 
     this.add_csl = function(name, value) {
         csl_map[name] = value;
@@ -19,14 +20,6 @@ var _CollectiveCitationstylesInfo = function () {
 
     this.available_styles = function() {
         return available_csl.sort();
-    }
-
-    this.set_default_csl = function (name) {
-        default_csl = name;
-    }
-
-    this.get_default_csl = function (name) {
-        return default_csl;
     }
 
     this.add_locale = function(name, value) {
@@ -56,7 +49,7 @@ var _CollectiveCitationstylesInfo = function () {
     this.getAbbreviations = function () {
         // Return empty abbreviation info. This should be retrieved
         // from the control panel via AJAX
-        return abbreviations;
+        return this.abbreviations;
     }
 }
 
