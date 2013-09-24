@@ -191,17 +191,27 @@ class ReferenceCSLRenderer(object):
             key = mapping['key']
             value = mapping['value']
             newkey = None
-            if key in VALID_CSL_VARIABLES:
-                newkey = key
-            elif key in BIBREF_TO_CSL_MAPPING:
-                newkey = BIBREF_TO_CSL_MAPPING[key]
+            if key.lower() in VALID_CSL_VARIABLES:
+                newkey = key.lower()
+            elif key.lower() in BIBREF_TO_CSL_MAPPING:
+                newkey = BIBREF_TO_CSL_MAPPING[key.lower()]
             if newkey and value:
                 output[newkey] = value
         return output
 
     def handle_people(self, bib_ref):
         """deal with authors and editors
+        
+        data output as list of {'family': 'xxx', 'given': 'xxx'} dicts
         """
-        # XXX: replace this with a real implementation
-        people = {'author': [{'family': 'Flintstone', 'given': 'Fred'}]}
-        return people
+        key = 'author'
+        if bib_ref.editor_flag:
+            key = 'editor'
+        authors = []
+        for author in bib_ref.getAuthors():
+            person = {
+                'family': author['lastname'],
+                'given': '{firstname} {middlename}'.format(**author).strip()
+            }
+            authors.append(person)
+        return {key: authors}
