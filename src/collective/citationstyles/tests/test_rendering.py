@@ -9,6 +9,7 @@ from plone.app.testing import TEST_USER_ID
 from zope.component import provideUtility
 from zope.component import queryUtility
 from zope.interface import alsoProvides
+from bibliograph.core.utils import _decode
 
 from collective.citationstyles.interfaces import ICitationRenderer
 from collective.citationstyles.browser.jsonview import CitationJSONView
@@ -162,5 +163,5 @@ class TestJSONViewIntegration(unittest.TestCase):
         except Exception:
             self.fail('invalid json: %s' % json_val)
         for obj in ctxt.objectValues():
-            expected = obj.Title()
+            expected = _decode(obj.Title())
             self.assertTrue(expected in actual)
