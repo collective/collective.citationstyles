@@ -7,11 +7,12 @@
 <tal:script-tag replace="structure string:<script>" />
  <tal:defines tal:define="local_url context/absolute_url">
 $(document).ready( function() {
+  $('.cmfbib_entry').hide();
   if (collective_csl_info === undefined) {
     return;
   }
   $.getJSON("<span tal:replace="string:${local_url}/@@citations-json">url</span>", function (data, status, xhr) {
-    var output, insertable;
+    var output, insertable, replaceable;
     collective_csl_info.set_references(data);
     citeproc = new CSL.Engine(collective_csl_info, collective_csl_info.retrieveCSL());
     citeproc.updateItems(collective_csl_info.reference_keys());
@@ -19,7 +20,9 @@ $(document).ready( function() {
     output = citeproc.makeBibliography();
     if (output && output.length && output[1].length) {
       insertable = output[0].bibstart + output[1].join("") + output[0].bibend;
-      $('div.bibliography_wrapper').html(insertable);
+      replaceable = $('.cmfbib_entry');
+      replaceable.filter(':first').before(insertable);
+      replaceable.remove();
     }
   });
 });
