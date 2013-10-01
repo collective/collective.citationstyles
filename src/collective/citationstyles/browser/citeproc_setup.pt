@@ -1,0 +1,29 @@
+<tal:viewlet-markup tal:condition="view/available">
+
+<script type="text/javascript; e4x=1" src="++resource++citationstyles.citeprocjs/xmle4x.js"></script>
+<script type="text/javascript" src="++resource++citationstyles.citeprocjs/xmldom.js"></script>
+<script type="text/javascript" src="++resource++citationstyles.citeprocjs/citeproc.js"></script>
+<script type="text/javascript" src="@@citationstyles-js"></script>
+<tal:script-tag replace="structure string:<script>" />
+ <tal:defines tal:define="local_url context/absolute_url">
+$(document).ready( function() {
+  if (collective_csl_info === undefined) {
+    return;
+  }
+  $.getJSON("<span tal:replace="string:${local_url}/@@citations-json">url</span>", function (data, status, xhr) {
+    var output, insertable;
+    collective_csl_info.set_references(data);
+    citeproc = new CSL.Engine(collective_csl_info, collective_csl_info.retrieveCSL());
+    citeproc.updateItems(collective_csl_info.reference_keys());
+    citeproc.setAbbreviations("default");
+    output = citeproc.makeBibliography();
+    if (output && output.length && output[1].length) {
+      insertable = output[0].bibstart + output[1].join("") + output[0].bibend;
+      $('div.bibliography_wrapper').html(insertable);
+    }
+  });
+});
+ </tal:defines>
+<tal:script-tag replace="structure string:</script>" />
+
+</tal:viewlet-markup>
