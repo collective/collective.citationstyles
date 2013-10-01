@@ -27,9 +27,21 @@
       permission="zope2.View"
       />
 
+  <browser:viewlet
+      name="citeproc-setup"
+      manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
+      class="collective.citationstyles.browser.viewlets.CiteprocSetupViewlet"
+      permission="zope2.View"
+      />
+
   <browser:resourceDirectory
       name="citationstyles.locales"
       directory="locale"
+      />
+
+  <browser:resourceDirectory
+      name="citationstyles.citeprocjs"
+      directory="citeproc-js"
       />
 
 </configure>
