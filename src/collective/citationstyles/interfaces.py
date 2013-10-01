@@ -21,3 +21,7 @@ class ICitationRenderer(Interface):
 
 class ICitationIterator(Interface):
     """adapter that produces an iterable of IBibliographicReference items"""
+
+
+class ICitationStylesLayer(Interface):
+    """browser layer interface"""
