@@ -12,6 +12,7 @@ var _CollectiveCitationstylesInfo = function () {
     this.abbreviations = {"default": {}};
     this.default_csl = '';
     this.default_locale = '';
+    this.references = {};
 
     this.add_csl = function(name, value) {
         csl_map[name] = value;
@@ -27,6 +28,19 @@ var _CollectiveCitationstylesInfo = function () {
         available_locale.push(name);
     }
 
+    this.set_references = function(data) {
+        this.references = data;
+    }
+
+    this.reference_keys = function() {
+        var k, keys = [];
+        for (k in this.references) {
+            if (this.references.hasOwnProperty(k)) {
+                keys.push(k);
+            }
+        }
+        return keys;
+    }
 
     this.available_locales = function() {
         return available_locale.sort();
@@ -36,9 +50,9 @@ var _CollectiveCitationstylesInfo = function () {
         return locale_map[name];
     }
 
-    this.retrieveItem = function() {
+    this.retrieveItem = function(id) {
         // Not Implemented
-        return '';
+        return this.references[id];
     }
 
     this.retrieveCSL = function(name) {
