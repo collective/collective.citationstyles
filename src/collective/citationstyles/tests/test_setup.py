@@ -1,3 +1,4 @@
+from os.path import basename
 import unittest2 as unittest
 
 from zope.component import queryUtility
@@ -17,6 +18,7 @@ class TestSetup(unittest.TestCase):
         self.app = self.layer['app']
         self.portal = self.layer['portal']
         self.qi_tool = getToolByName(self.portal, 'portal_quickinstaller')
+        self.js_reg = getToolByName(self.portal, 'portal_javascripts')
 
     def test_product_is_installed(self):
         """The package and dependencies should be installed"""
@@ -34,3 +36,11 @@ class TestSetup(unittest.TestCase):
     def test_citation_renderer_utility_registered(self):
         renderer = queryUtility(ICitationRenderer)
         self.assertTrue(renderer is not None)
+
+    def test_resources_available(self):
+        expected = ['citeproc.js', 'xmldom.js', 'xmle4x.js']
+        my_resources = [r.getId() for r in self.js_reg.resources\
+                                    if 'citationstyles' in r.getId()]
+        self.assertEqual(len(my_resources), 3)
+        for resource in my_resources:
+            self.assertTrue(basename(resource) in expected)
