@@ -3,3 +3,4 @@ Jazkarta, Author
 Carlos De La Guardia
 Alec Mitchell
 Cris Ewing
+Jesse Snyder

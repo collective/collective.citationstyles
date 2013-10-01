@@ -4,5 +4,8 @@ Changelog
 0.1a-dev (unreleased)
 ---------------------
 
+- Included citeproc.js and xmldom.js from citeproc-js 1.0.484
+  [cewing]
+
 - Package created using templer
   [Jazkarta]
