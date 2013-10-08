@@ -25,8 +25,6 @@
     <role name="Manager" />
   </permission>
 
-  <include package=".browser" />
-
   <adapter for="*"
            provides=".interfaces.ICitationIterator"
            factory=".adapters.BibliograpyIterator" />
@@ -34,5 +32,20 @@
   <utility provides=".interfaces.ICitationRenderer"
            factory=".utility.ReferenceCSLRenderer"
            permission="zope.Public" />
+
+  <utility component=".vocabularies.SelectableStylesheetsVocabularyFactory"
+           name="collective.citationstyles.vocabularies.SelectableStylesheets"
+    />
+
+  <permission
+    id="collective.citationstyles.SelectCitationStyle"
+    title="collective.citationstyles: Select citation style">
+      <role name="Editor" />
+      <role name="Site Administrator" />
+      <role name="Manager" />
+  </permission>
+
+  <include package=".browser" />
+
 
 </configure>

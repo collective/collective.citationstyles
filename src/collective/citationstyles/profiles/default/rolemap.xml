@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<rolemap>
+  <permissions>
+    <permission name="collective.citationstyles: Select citation style" acquire="True">
+      <role name="Editor"/>
+      <role name="Site Administrator"/>
+      <role name="Manager"/>
+    </permission>
+  </permissions>
+</rolemap>

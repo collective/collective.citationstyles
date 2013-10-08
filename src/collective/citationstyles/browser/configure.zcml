@@ -44,4 +44,13 @@
       directory="citeproc-js"
       />
 
+  <!-- form for selecting a stylesheet for a bibliographic folder -->
+  <browser:page
+      for="bibliograph.core.interfaces.IBibliography"
+      name="citationstyle_style_select_form"
+      class=".styleselect.StyleSelectView"
+      permission="collective.citationstyles.SelectCitationStyle"
+      />
+
+
 </configure>

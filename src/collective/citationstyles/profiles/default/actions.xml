@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<object name="portal_actions" meta_type="Plone Actions Tool"
+   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <object name="object" meta_type="CMF Action Category">
+  <object name="citationstyles_csl_select_form" meta_type="CMF Action">
+   <property name="title">Citation Style</property>
+   <property
+      name="description">Edit for selection the citation style for this bibliography folder.</property>
+   <property
+      name="url_expr">string:${object_url}/@@citationstyle_style_select_form</property>
+   <property name="link_target"></property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python: context.restrictedTraverse('@@plone_interface_info').provides('bibliograph.core.interfaces.IBibliography')</property>
+   <property name="permissions">
+    <element value="collective.citationstyles: Select citation style"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+ </object>
+</object>
