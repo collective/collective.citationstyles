@@ -20,18 +20,13 @@ class IStylesheetSelect(interface.Interface):
 
 class StylesheetSelectForm(form.Form):
     fields = field.Fields(IStylesheetSelect)
-    ignoreContext = True # don't use context to get widget data
     label = _(u"Citations Style")
     description = _(u"Style for citations.")
 
-    def updateWidgets(self):
-        form.Form.updateWidgets(self)
-
+    def getContent(self):
         annotations = IAnnotations(self.context)
         curr_style = annotations.get(STYLESHEET_SELECTED_KEY)
-        if curr_style:
-            print "CS = ", curr_style
-            self.widgets['style'].value = curr_style
+        return { 'style': curr_style }
 
     @button.buttonAndHandler(u'Select Style')
     def handleApply(self, action):
