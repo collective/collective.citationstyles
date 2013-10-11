@@ -1,10 +1,16 @@
 import os
 from json import dumps
+
+from Acquisition import aq_parent
 from zope.component import getUtility, queryMultiAdapter
 from zope.publisher.browser import BrowserView
+from zope.annotation.interfaces import IAnnotations
 
 from plone.registry.interfaces import IRegistry
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFPlone.log import log
+
+from ..config import STYLESHEET_SELECTED_KEY
 from ..interfaces import ISettings
 
 LOCALES_DIR = os.path.join(os.path.dirname(__file__), 'locale')
@@ -26,6 +32,27 @@ class CitationStylesJSView(BrowserView):
     def _setHeader(self):
         self.request.RESPONSE.setHeader('content-type',
                                       "application/javascript; charset='utf-8'")
+
+    def current_style(self, site_default_style):
+        """Returns current stylesheet selection or site default."""
+
+        context = self.context
+        while True:
+            
+            if ISiteRoot.providedBy(context):
+                return site_default_style
+
+            annotations = IAnnotations(context)
+            curr_style = annotations.get(STYLESHEET_SELECTED_KEY)
+
+            if curr_style:
+                return curr_style
+
+            if curr_style == '':
+                return site_default_style
+
+            context = aq_parent(context)
+
     def render_csl(self):
         """Returns JS rendering of CSL files"""
         registry = getUtility(IRegistry)
@@ -35,8 +62,9 @@ class CitationStylesJSView(BrowserView):
         for name, value in styles.iteritems():
             output.append('collective_csl_info.add_csl({0}, {1});'.format(
                 dumps(name), dumps(value)));
+        style = self.current_style(settings.default_style)
         output.append('collective_csl_info.default_csl = {0};'.format(
-            dumps(settings.default_style)))
+            dumps(style)))
         return '\n'.join(output)
 
     def render_locales(self):
