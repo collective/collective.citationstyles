@@ -4,6 +4,8 @@ from zope.annotation.interfaces import IAnnotations, IAttributeAnnotatable
 from z3c.form import form, field, button
 from plone.z3cform.layout import wrap_form
 
+from Products.statusmessages.interfaces import IStatusMessage
+
 from collective.citationstyles import citationstylesMessageFactory as _
 from collective.citationstyles.config import STYLESHEET_SELECTED_KEY
 
@@ -28,6 +30,7 @@ class StylesheetSelectForm(form.Form):
         annotations = IAnnotations(self.context)
         curr_style = annotations.get(STYLESHEET_SELECTED_KEY)
         if curr_style:
+            print "CS = ", curr_style
             self.widgets['style'].value = curr_style
 
     @button.buttonAndHandler(u'Select Style')
@@ -42,7 +45,9 @@ class StylesheetSelectForm(form.Form):
         annotations = IAnnotations(self.context)
         annotations[STYLESHEET_SELECTED_KEY] = data['style']
 
-        self.status = _(u'Citations style set.')
+        self.request.response.redirect(self.context.absolute_url())
+        messages = IStatusMessage(self.request)
+        messages.add(_(u"Citation style set: ") + data['style'], type=u"info")
 
 
 StyleSelectView = wrap_form(StylesheetSelectForm)
