@@ -107,6 +107,18 @@ class ReferenceCSLRenderer(object):
         
         return output
 
+    def _render_base_unit(self, unit):
+        val = ''
+        # skip binary annotations?
+        if not unit.binary:
+            # skip non-plain-text annotations?
+            if unit.mimetype == "text/plain":
+                val = unit.raw
+                # encode raw unicode to bytestrings
+                if isinstance(val, unicode):
+                    val = val.encode(unit.original_encoding)
+        return val
+
     def handle_bibref_interface(self, bib_ref):
         """handle all attributes and methods for IBibliographicReference"""
         output = {}
@@ -115,6 +127,9 @@ class ReferenceCSLRenderer(object):
             if key in VALID_CSL_VARIABLES:
                 val = getattr(bib_ref, key, None)
                 if val:
+                    if key == 'annote':
+                        # annote holds BaseUnits, which have renderable content
+                        val = self._render_base_unit(val)
                     output[key] = val
             elif key in BIBREF_TO_CSL_MAPPING:
                 val = getattr(bib_ref, key, None)

@@ -20,6 +20,7 @@
       permission="zope2.View"
       />
 
+  <!-- view that renders core javascript setup for the CSL Engine -->
   <browser:page
       for="*"
       name="citationstyles-js"
@@ -27,6 +28,8 @@
       permission="zope2.View"
       />
 
+  <!-- viewlet that renders setup code for rendering citations on the client 
+       side -->
   <browser:viewlet
       name="citeproc-setup"
       manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
