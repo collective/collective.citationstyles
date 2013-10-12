@@ -20,7 +20,12 @@ class CitationJSONView(BrowserView):
             for item in items:
                 rendered = renderer(item)
                 result[rendered['id']] = rendered
-        return json.dumps(result)
+        try:
+            json_reply = json.dumps(result)
+            return json_reply
+        except TypeError, e:
+            reply = {'error': str(e)}
+            return json.dumps(reply)
 
     def _setHeader(self):
         self.request.RESPONSE.setHeader('content-type',
