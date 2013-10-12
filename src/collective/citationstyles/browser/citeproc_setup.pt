@@ -13,6 +13,11 @@ $(document).ready( function() {
   }
   $.getJSON("<span tal:replace="string:${local_url}/@@citations-json">url</span>", function (data, status, xhr) {
     var output, insertable, replaceable;
+    replaceable = $('.cmfbib_entry');
+    if (data.error !== undefined) {
+      replaceable.show();
+      return;
+    }
     collective_csl_info.set_references(data);
     citeproc = new CSL.Engine(collective_csl_info, collective_csl_info.retrieveCSL());
     citeproc.updateItems(collective_csl_info.reference_keys());
@@ -20,7 +25,6 @@ $(document).ready( function() {
     output = citeproc.makeBibliography();
     if (output && output.length && output[1].length) {
       insertable = output[0].bibstart + output[1].join("") + output[0].bibend;
-      replaceable = $('.cmfbib_entry');
       replaceable.filter(':first').before(insertable);
       replaceable.remove();
     }
