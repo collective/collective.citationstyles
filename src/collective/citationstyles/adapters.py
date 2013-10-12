@@ -5,6 +5,9 @@ from zope.component import queryAdapter
 from bibliograph.core.interfaces import IBibliographicReference
 from Products.CMFBibliographyAT.interface import IBibliographicItem
 
+import logging
+logger = logging.getLogger('collective.citationstyles')
+
 
 class BibliograpyIterator(object):
 
@@ -28,6 +31,15 @@ class BibliograpyIterator(object):
         elif hasattr(checkme, 'objectValues'):
             for obj in self.context.objectValues():
                 if IBibliographicItem.providedBy(obj):
-                    biblio = queryAdapter(obj, IBibliographicReference)
+                    try:
+                        biblio = queryAdapter(obj, IBibliographicReference)
+                    except AttributeError, e:
+                        # this can happen if a bibliographic item does
+                        # not have one of the required attributes for the 
+                        # adapter.  Log the error
+                        msg = "Adaptation of {} to IBibliographicReference "
+                        msg += "failed due to a missing attribute: {}"
+                        logger.warn(msg.format(obj.id, str(e)))
+                        continue
                     if biblio is not None:
                         yield biblio
