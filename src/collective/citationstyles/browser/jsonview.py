@@ -1,6 +1,6 @@
 
 import json
-from zope.component import queryUtility
+from zope.component import queryUtility, getMultiAdapter
 from zope.publisher.browser import BrowserView
 
 from collective.citationstyles.interfaces import ICitationIterator
@@ -13,7 +13,7 @@ class CitationJSONView(BrowserView):
 
     def __call__(self):
         self._setHeader()
-        items = ICitationIterator(self.context)
+        items = getMultiAdapter((self.context, self.request), ICitationIterator)
         renderer = queryUtility(ICitationRenderer, default=None)
         result = {}
         if renderer:

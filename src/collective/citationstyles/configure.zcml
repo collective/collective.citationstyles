@@ -25,9 +25,10 @@
     <role name="Manager" />
   </permission>
 
-  <adapter for="*"
+  <adapter for="Products.CMFCore.interfaces.IContentish
+                zope.publisher.interfaces.browser.IBrowserRequest"
            provides=".interfaces.ICitationIterator"
-           factory=".adapters.BibliograpyIterator" />
+           factory=".adapters.BibliographyIterator" />
 
   <utility provides=".interfaces.ICitationRenderer"
            factory=".utility.ReferenceCSLRenderer"

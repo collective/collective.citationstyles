@@ -32,14 +32,20 @@ $(document).ready( function() {
             bib_replaceable.filter(':first').before(insertable);
             for (i=0; i<output[1].length; i++) {
                 entry_id = output[0].entry_ids[i][0];
+                console.log(entry_id);
                 link = $('<a class="cmfbib_entry_link">');
-                link.attr('href', $('a[uid="' + entry_id + '"]').attr('href'))
-                    .text('more information about this reference');
-                entry = $(output[1][i]);
-                if (link.attr('href')) {
-                    link.appendTo(entry);
+                found = $('a[uid="' + entry_id + '"]')
+                // iterator may return items not found on page (because of
+                // batching); safely handle missing items by ignoring.
+                if (found.length) {
+                    link.attr('href', found.attr('href'))
+                        .text('more information about this reference');
+                    entry = $(output[1][i]);
+                    if (link.attr('href')) {
+                        link.appendTo(entry);
+                    }
+                    entry.appendTo(insertable);
                 }
-                entry.appendTo(insertable);
             }
             bib_replaceable.remove();
         } else {

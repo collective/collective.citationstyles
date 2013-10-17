@@ -9,10 +9,11 @@ import logging
 logger = logging.getLogger('collective.citationstyles')
 
 
-class BibliograpyIterator(object):
+class BibliographyIterator(object):
 
-    def __init__(self, context):
+    def __init__(self, context, request):
         self.context = context
+        self.request = request
 
     def __iter__(self):
         checkme = aq_base(self.context)
