@@ -32,7 +32,7 @@ $(document).ready( function() {
             bib_replaceable.filter(':first').before(insertable);
             for (i=0; i<output[1].length; i++) {
                 entry_id = output[0].entry_ids[i][0];
-                console.log(entry_id);
+                entry = $(output[1][i]);
                 link = $('<a class="cmfbib_entry_link">');
                 found = $('a[uid="' + entry_id + '"]')
                 // iterator may return items not found on page (because of
@@ -40,10 +40,11 @@ $(document).ready( function() {
                 if (found.length) {
                     link.attr('href', found.attr('href'))
                         .text('more information about this reference');
-                    entry = $(output[1][i]);
                     if (link.attr('href')) {
                         link.appendTo(entry);
                     }
+                    entry.appendTo(insertable);
+                } else if (output[1].length == 1) {
                     entry.appendTo(insertable);
                 }
             }
