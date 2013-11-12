@@ -38,10 +38,9 @@ $(document).ready( function() {
                 // iterator may return items not found on page (because of
                 // batching); safely handle missing items by ignoring.
                 if (found.length) {
-                    link.attr('href', found.attr('href'))
-                        .text('more information about this reference');
+                    link.attr('href', found.attr('href'));
                     if (link.attr('href')) {
-                        link.appendTo(entry);
+                        entry.wrapInner(link[0]);
                     }
                     entry.appendTo(insertable);
                 } else if (output[1].length == 1) {
