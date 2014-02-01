@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.1a'
+version = '0.2a'
 
 long_description = (
     open('README.rst').read()
@@ -12,7 +12,7 @@ long_description = (
 
 setup(name='collective.citationstyles',
       version=version,
-      description="InEasily configurable citation formats for bibliographies in Plone",
+      description="Easily configurable citation formats for bibliographies in Plone",
       long_description=long_description,
       # Get more strings from
       # http://pypi.python.org/pypi?%3Aaction=list_classifiers
