@@ -48,5 +48,13 @@
 
   <include package=".browser" />
 
+  <genericsetup:upgradeStep
+    title="Upgrade Installed CSL sheets"
+    source="0001"
+    destination="0002"
+    handler="collective.citationstyles.upgrades.upgrade_csl"
+    sortkey="1"
+    profile="collective.citationstyles:default"
+    />
 
 </configure>
