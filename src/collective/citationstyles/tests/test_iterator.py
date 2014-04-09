@@ -4,7 +4,7 @@ from bibliograph.core.interfaces import IBibliographicReference
 
 from collective.citationstyles.testing import \
     COLLECTIVE_CITATIONSTYLES_INTEGRATION_TESTING
-from collective.citationstyles.adapters import BibliograpyIterator
+from collective.citationstyles.adapters import BibliographyIterator
 
 
 class TestBibliograpyIterator(unittest.TestCase):
@@ -14,10 +14,11 @@ class TestBibliograpyIterator(unittest.TestCase):
     def setUp(self):
         self.app = self.layer['app']
         self.portal = self.layer['portal']
+        self.request = self.layer['request']
         self.bib_folder = self.portal.bib_folder
 
     def test_returns_contents_of_bibfolder_as_bibrefs(self):
-        iterable = BibliograpyIterator(self.bib_folder)
+        iterable = BibliographyIterator(self.bib_folder, self.request)
         self.assertTrue(iterable is not None)
         listified = [item for item in iterable]
         self.assertEqual(len(self.bib_folder.objectValues()), len(listified))
@@ -25,7 +26,9 @@ class TestBibliograpyIterator(unittest.TestCase):
             self.assertTrue(IBibliographicReference.providedBy(item))
 
     def test_returns_single_bibitem_as_bibrefs(self):
-        iterable = BibliograpyIterator(self.bib_folder.objectValues()[0])
+        iterable = BibliographyIterator(
+            self.bib_folder.objectValues()[0], self.request
+        )
         self.assertTrue(iterable is not None)
         listified = [item for item in iterable]
         self.assertEqual(1, len(listified))
@@ -36,5 +39,5 @@ class TestBibliograpyIterator(unittest.TestCase):
         class foo(object):
             pass
 
-        iterable = BibliograpyIterator(foo())
+        iterable = BibliographyIterator(foo(), self.request)
         self.assertEqual(0, len([item for item in iterable]))
