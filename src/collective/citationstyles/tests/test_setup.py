@@ -1,9 +1,12 @@
 from os.path import basename
 import unittest2 as unittest
 
+from plone.registry.interfaces import IRegistry
 from zope.component import queryUtility
 from Products.CMFCore.utils import getToolByName
 
+from collective.citationstyles import DEFAULT_STYLES, DEFAULT_CSL
+from collective.citationstyles.interfaces import ISettings
 from collective.citationstyles.testing import \
     COLLECTIVE_CITATIONSTYLES_INTEGRATION_TESTING
 from collective.citationstyles.interfaces import ICitationIterator
@@ -47,3 +50,11 @@ class TestSetup(unittest.TestCase):
                 self.portal.restrictedTraverse(resource_path)
             except AttributeError:
                 self.fail("Unable to traverse to %s" % resource_path)
+
+    def test_registry_settings(self):
+        registry = queryUtility(IRegistry)
+        settings = registry.forInterface(ISettings)
+        self.assertEqual(DEFAULT_CSL, settings.default_style)
+        self.assertEqual(
+            sorted(DEFAULT_STYLES), sorted(settings.citation_styles.keys())
+        )
