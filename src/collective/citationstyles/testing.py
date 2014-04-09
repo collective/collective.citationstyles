@@ -44,6 +44,7 @@ class CollectivecitationstylesLayer(PloneSandboxLayer):
         z2.uninstallProduct(app, 'Products.CMFBibliographyAT')
 
     def setUpPloneSite(self, portal):
+        applyProfile(portal, 'Products.CMFBibliographyAT:default')
         applyProfile(portal, 'collective.citationstyles:default')
         setRoles(portal, TEST_USER_ID, ['Manager'])
         login(portal, TEST_USER_NAME)
