@@ -2,14 +2,8 @@ from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 from Products.CMFCore.utils import getToolByName
 
+from collective.citationstyles import DEFAULT_STYLES
 from collective.citationstyles.interfaces import ISettings
-
-
-DEFAULT_STYLES = [
-    u'Modern Language Association 7th edition',
-    u'American Psychological Association 6th edition',
-    u'Chicago Manual of Style 16th edition (note)',
-]
 
 
 def upgrade_csl(context):
