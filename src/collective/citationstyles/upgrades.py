@@ -17,7 +17,6 @@ def upgrade_csl(context):
 
     Do not alter any customizations made in the site.
     """
-    import pdb; pdb.set_trace()
     registry = getUtility(IRegistry)
     csl_settings = registry.forInterface(ISettings)
     # get current settings:
