@@ -17,6 +17,7 @@ class TestSetup(unittest.TestCase):
     def setUp(self):
         self.app = self.layer['app']
         self.portal = self.layer['portal']
+        self.request = self.layer['request']
         self.qi_tool = getToolByName(self.portal, 'portal_quickinstaller')
         self.js_reg = getToolByName(self.portal, 'portal_javascripts')
 
@@ -30,7 +31,7 @@ class TestSetup(unittest.TestCase):
                             'package appears not to have been installed')
 
     def test_citation_iteration_adapter_registered(self):
-        iterator = ICitationIterator(self.portal)
+        iterator = ICitationIterator(self.portal, self.request)
         self.assertTrue(iterator is not None)
 
     def test_citation_renderer_utility_registered(self):
@@ -39,8 +40,10 @@ class TestSetup(unittest.TestCase):
 
     def test_resources_available(self):
         expected = ['citeproc.js', 'xmldom.js', 'xmle4x.js']
-        my_resources = [r.getId() for r in self.js_reg.resources\
-                                    if 'citationstyles' in r.getId()]
-        self.assertEqual(len(my_resources), 3)
-        for resource in my_resources:
-            self.assertTrue(basename(resource) in expected)
+        base_resourcepath = '++resource++citationstyles.citeprocjs/'
+        for filename in expected:
+            resource_path = base_resourcepath + filename
+            try:
+                self.portal.restrictedTraverse(resource_path)
+            except AttributeError:
+                self.fail("Unable to traverse to %s" % resource_path)
