@@ -27,7 +27,12 @@ class SelectableStylesheetsVocabulary(object):
 
         citation_styles = settings.citation_styles
         for style in citation_styles.keys():
-            terms.append(SimpleVocabulary.createTerm(style, style, style))
+            token_val = style
+            if isinstance(token_val, unicode):
+                # escape unicode so that the token rendered in the form is
+                # guaranteed to be only 7 bits
+                token_val = style.encode('unicode_escape')
+            terms.append(SimpleVocabulary.createTerm(style, token_val, style))
         return SimpleVocabulary(terms)
 
 SelectableStylesheetsVocabularyFactory = SelectableStylesheetsVocabulary()
