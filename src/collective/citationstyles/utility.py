@@ -71,7 +71,7 @@ CSL_TYPES = [
 ]
 
 BIBTYPES_TO_CSLTYPES_MAPPING = {
-    'ArticleReference': 'article',
+    'ArticleReference': 'article-journal',
     'BookReference': 'book',
     'BookletReference': 'pamphlet',
     'InbookReference': 'chapter',
