@@ -1,6 +1,7 @@
 from zope.interface import Interface
 from zope import schema
 from collective.citationstyles import citationstylesMessageFactory as _
+from collective.citationstyles import DEFAULT_CSL
 
 
 class ISettings(Interface):
@@ -12,7 +13,7 @@ class ISettings(Interface):
 
     default_style = schema.TextLine(title=_(u'Default Style'),
         description=_(u'The default citation style to use on the site'),
-        default=None)
+        default=DEFAULT_CSL)
 
 
 class ICitationRenderer(Interface):
