@@ -16,6 +16,16 @@
       description="Installs the collective.citationstyles package"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
+
+  <!-- custom GS import step -->
+  <genericsetup:importStep
+      name="collective.citationstyles"
+      title="collective.citationstyles custom import handlers"
+      description="handles custom setup for collective.citationstyles"
+      handler="collective.citationstyles.setuphandlers.setupVarious">
+    <depends name="plone.app.registry"/>
+  </genericsetup:importStep>
+
   <!-- -*- extra stuff goes here -*- -->
 
   <permission
