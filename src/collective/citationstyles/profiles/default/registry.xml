@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
 <registry>
   <records interface="collective.citationstyles.interfaces.ISettings">
-    <value key="default_style">Chicago Manual of Style 16th edition (note)</value>
-    <value key="citation_styles">
+    <value key="citation_styles" purge="false">
       <element key="Chicago Manual of Style 16th edition (note)"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <style xmlns="http://purl.org/net/xbiblio/csl" class="note" version="1.0" demote-non-dropping-particle="never">
   <info>
