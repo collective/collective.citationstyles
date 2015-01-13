@@ -129,6 +129,33 @@ class TestJSONView(unittest.TestCase):
         for item in ctxt.queryCatalog():
             self.assertTrue(item.getObject().UID() in actual)
 
+    def testJSONRenderingOfEditors(self):
+        """demonstrate that editors are properly rendered to citeproc json
+
+        example content contains both author and editors
+        """
+        edited_ids = ['Ben-Porath2013', '02ba8297985d408491fda4cc1d6e610e']
+        edited = {}
+        for eid in edited_ids:
+            edited[eid] = self.bib_folder[eid]
+        for eid, ctxt in edited.items():
+            view = self.getView(ctxt)
+            json_val = view()
+            self.assertTrue(json_val)
+            try:
+                actual = json.loads(json_val)
+            except Exception:
+                self.fail('ivalid json: %s' % json_val)
+
+            for item_id, actual_item in actual.items():
+                for expected_category in ['author', 'editor']:
+                    self.assertTrue(expected_category in actual_item)
+                    actual_category = actual_item[expected_category]
+                    self.assertTrue(actual_category)
+                    for person in actual_category:
+                        for name_type in ['family', 'given']:
+                            self.assertTrue(name_type in person)
+
 
 class DumbRenderer(object):
     """ Render the bare minimum about an IBibliographicReference
