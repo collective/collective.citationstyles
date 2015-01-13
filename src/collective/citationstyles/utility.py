@@ -86,6 +86,47 @@ BIBTYPES_TO_CSLTYPES_MAPPING = {
 }
 
 
+def split_name(name=None):
+    if not name:
+        return []
+    parts = name.split(',', 1)
+    if len(parts) == 1:
+        return parts[0].split()
+    else:
+        tmp = parts[1].split()
+        tmp.append(parts[0])
+        return tmp
+
+
+def structure_name(name):
+    """take a name in any format and break it into first, last and middle
+    """
+    fname = mname = lname = ''
+    parts = split_name(name)
+    if len(parts) == 1:
+        lname = parts[0].strip()
+    else:
+        lname = parts[-1].strip()
+        fname = parts[0].strip()
+        if parts[1:-1]:
+            mname = ' '.join([_ for _ in parts[1:-1]])
+    adict = {'firstname': fname,
+             'middlename': mname,
+             'lastname': lname}
+    return adict
+
+
+def format_name(name_parts):
+    """convert first, last and middlename parts into family and given dict
+    """
+    person = {
+        'family': name_parts['lastname'],
+        'given': '{firstname} {middlename}'.format(**name_parts).strip()
+    }
+    return person
+
+
+
 class ReferenceCSLRenderer(object):
     """convert IBibliographicReference items to python dict
     
@@ -229,4 +270,32 @@ class ReferenceCSLRenderer(object):
                 'given': '{firstname} {middlename}'.format(**author).strip()
             }
             authors.append(person)
-        return {key: authors}
+        people = {key: authors}
+        if key != 'editor' and hasattr(bib_ref.context, 'editor'):
+            # We have an object where 'editors' are not being treated as
+            # 'authors' but there are in fact editors, this means we want both.
+            people.update(self.handle_editors(bib_ref))
+
+        return people
+
+    def handle_editors(self, bib_ref):
+        """parse an unparsed list of editors from the editor field
+
+        This is required when CMFBibAT parsing has left the editor field
+        untouched and we want to have both author and editors listed
+        """
+        obj = bib_ref.context
+        editor = obj.getEditor()
+        editor_list = []
+        if editor:
+            # normalize separators
+            editor.replace(' AND', ' and')
+            editor_list.extend(editor.split(' and'))
+        editor_list = map(
+            lambda x: format_name(structure_name(x)),
+            editor_list
+        )
+        people = {}
+        if editor_list:
+            people['editor'] = editor_list
+        return people
