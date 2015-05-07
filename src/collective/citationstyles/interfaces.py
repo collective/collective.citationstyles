@@ -26,3 +26,8 @@ class ICitationIterator(Interface):
 
 class ICitationStylesLayer(Interface):
     """browser layer interface"""
+
+
+class IBibViewMarker(Interface):
+    """A marker interfaces for views which potentially contain
+    bibliographic items"""
