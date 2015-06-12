@@ -67,12 +67,18 @@ $(document).on('ready', function() {
                 return;
             }
             all_bibs.hide();
+            var bib_data = {}
             all_bibs.each(function () {
                 bib_replaceable = $(this);
                 var uid = bib_replaceable.attr('id');
                 $.getJSON(
                     request_base + '/resolveuid/' + uid + '/@@citations-json',
-                    bib_replace
+                    function (data, status, xhr) {
+                        jQuery.extend(bib_data, data);
+                        if (Object.keys(bib_data).length == all_bibs.length) {
+                            bib_replace(bib_data, status, xhr);
+                        }
+                    }
                 );
             });
         });
