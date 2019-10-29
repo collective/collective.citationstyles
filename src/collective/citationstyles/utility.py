@@ -120,8 +120,10 @@ def format_name(name_parts):
     """convert first, last and middlename parts into family and given dict
     """
     person = {
-        'family': name_parts['lastname'],
-        'given': '{firstname} {middlename}'.format(**name_parts).strip()
+        'family': name_parts.get('lastname') or '',
+        'given': '{} {}'.format(
+            name_parts.get('firstname'), name_parts.get('middlename')
+        ).strip()
     }
     return person
 
@@ -266,8 +268,10 @@ class ReferenceCSLRenderer(object):
         authors = []
         for author in bib_ref.getAuthors():
             person = {
-                'family': author['lastname'],
-                'given': '{firstname} {middlename}'.format(**author).strip()
+                'family': author.get('lastname') or '',
+                'given': '{} {}'.format(
+                    author.get('firstname'), author.get('middlename')
+                ).strip()
             }
             authors.append(person)
         people = {key: authors}
